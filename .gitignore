@@ -1,0 +1,27 @@
+# dependencies
+node_modules/
+.pnpm-store/
+
+# Next.js
+.next/
+out/
+next-env.d.ts
+*.tsbuildinfo
+
+# tests and reports
+coverage/
+playwright-report/
+test-results/
+blob-report/
+
+# environment
+.env*
+!.env.example
+
+# Vercel
+.vercel
+
+# logs and OS files
+*.log
+.DS_Store
+Thumbs.db
