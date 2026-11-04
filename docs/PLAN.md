@@ -429,21 +429,21 @@ Chaque phase se termine par une démo, cette checklist cochée et un débrief de
 - [ ] Toi : choisir le nom de domaine dans ma liste, puis l'acheter
 - [x] Moi : créer le repo public `portfolio`, protéger `main` par un ruleset (PR obligatoire, contournement réservé au rôle admin pour le CMS), activer secret scanning, push protection et Dependabot (fait le 1er novembre)
 - [x] Moi : signer les commits du repo avec ton adresse GitHub noreply, pour que ton email n'apparaisse pas dans l'historique public
-- [ ] Moi : créer et lier le projet Vercel, après ton vercel login
+- [x] Moi : créer et lier le projet Vercel, après ton vercel login (fait le 4 novembre)
 - [x] Moi : enregistrer le plan validé dans le projet Claude, puis une version sans données personnelles dans `docs/PLAN.md` et `CLAUDE.md`
 
 Terminé quand : plan validé, repo créé, Vercel relié au repo.
 
 ### Phase 1 — Fondations techniques
 
-- [ ] Moi : Next.js, TypeScript strict et pnpm, structure de dossiers, alias `@/`
-- [ ] Moi : Tailwind CSS v4, tokens provisoires, polices auto-hébergées
-- [ ] Moi : lint, formatage, EditorConfig, fins de ligne LF, hooks Git (lefthook) et Conventional Commits
-- [ ] Moi : Vitest et Testing Library, Playwright et axe, MSW, un premier test de chaque type
-- [ ] Moi : CI GitHub Actions, CodeQL, Dependabot
-- [ ] Moi : en-têtes de sécurité, variables d'environnement validées, `server-only`
+- [x] Moi : Next.js, TypeScript strict et pnpm, structure de dossiers, alias `@/`
+- [x] Moi : Tailwind CSS v4, tokens provisoires, polices auto-hébergées
+- [x] Moi : lint, formatage, EditorConfig, fins de ligne LF, hooks Git (lefthook) et Conventional Commits
+- [x] Moi : Vitest et Testing Library, Playwright et axe, MSW, un premier test de chaque type
+- [x] Moi : CI GitHub Actions, CodeQL, Dependabot
+- [x] Moi : en-têtes de sécurité, variables d'environnement validées, `server-only`
 - [ ] Moi : déploiement Vercel (production sur `main`, aperçu par PR), Web Analytics et Speed Insights
-- [ ] Moi : README, premiers ADR, `CLAUDE.md`
+- [x] Moi : README, premiers ADR, `CLAUDE.md`
 - [ ] Toi : ouvrir le projet dans VS Code, lancer `pnpm dev`, vérifier que tout tourne
 - [ ] Toi : séance de 30 minutes pour expliquer chaque outil et son rôle
 
