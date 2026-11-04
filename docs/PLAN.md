@@ -74,7 +74,7 @@ Validé le 1er novembre 2026 : les 17 décisions sont à OK. Pour en rouvrir une
 | D10 | Hébergement et domaine | Vercel Hobby (gratuit) + domaine perso | Netlify ; Cloudflare | Aperçu par PR, analytics sans cookies ; un domaine fait pro sur un CV (10 à 15 € par an) | OK |
 | D11 | Node.js et paquets | Node 26 LTS + pnpm 12 | Node 24 (maintenance) ; npm | 26 est la LTS active depuis le 28 octobre ; pnpm bloque les scripts d'installation non approuvés | OK |
 | D12 | TypeScript | 6.0 en mode strict | 7.0 (réécrit en Go) | 7.0 n'est pas encore pris en charge par typescript-eslint | OK |
-| D13 | Lint et format | ESLint 10 (règles Next.js et jsx-a11y strictes) + Prettier | Biome | 21 règles Next.js contre 12, couverture accessibilité la plus complète ; avertissements de dépendances notés dans un ADR | OK |
+| D13 | Lint et format | ESLint 10 (règles Next.js et jsx-a11y strictes) + Prettier | Biome | 22 règles Next.js contre 12, couverture accessibilité la plus complète ; avertissements de dépendances notés dans un ADR | OK |
 | D14 | Tests | Vitest 5, Testing Library, Playwright + axe, MSW 3, Lighthouse 13 en CI | Jest ; Cypress ; Lighthouse CI | Outils actuels ; Lighthouse CI n'a plus publié de version depuis juin 2025 | OK |
 | D15 | Formulaire de contact | Server Action + Resend (3 000 emails gratuits par mois), pot de miel et Turnstile | Formspree ; simple lien mailto | Rien n'est stocké par le site ; le journal d'envoi de Resend est déclaré dans la page confidentialité | OK |
 | D16 | Analytics | Vercel Web Analytics (sans cookies) + Speed Insights | Umami ; Plausible | Pas de bandeau cookies ; Core Web Vitals réels | OK |
@@ -114,16 +114,16 @@ Le visiteur ne touche jamais l'API GitHub en direct : il lit des pages déjà g�
 
 ### Stack et versions
 
-Versions stables relevées sur le registre npm le 1er novembre 2026 ; je les revérifie au moment de chaque installation.
+Versions stables relevées sur le registre npm le 1er novembre 2026 et revérifiées à l'installation le 4 novembre ; je les revérifie au moment de chaque installation.
 
 | Couche | Outil | Version | Rôle |
 | --- | --- | --- | --- |
 | Runtime | Node.js | 26 LTS | exécution locale, défaut de Vercel |
 | Paquets | pnpm | 12.16.1 | installation, scripts, protections supply-chain |
-| Framework | Next.js | 16.4.3, puis le correctif de sécurité annoncé pour le 3 novembre | pages, routes, Server Actions, cache |
+| Framework | Next.js | 16.4.5, correctif de sécurité du 3 novembre | pages, routes, Server Actions, cache |
 | UI | React et React Compiler | 19.3.1 et 1.0.0 | composants, mémoïsation automatique |
 | Langage | TypeScript | 6.0, strict | types |
-| Styles | Tailwind CSS | 4.3.3 | utilitaires, tokens de design |
+| Styles | Tailwind CSS | 4.3.4 | utilitaires, tokens de design |
 | Composants admin | shadcn/ui (Base UI) | CLI 4.23.0 | formulaires, dialogues, menus accessibles |
 | Animations | Motion | 14.9.0, chargé à la demande | transitions ponctuelles |
 | Thème | next-themes | 0.4.6 | clair et sombre sans flash |
@@ -133,9 +133,9 @@ Versions stables relevées sur le registre npm le 1er novembre 2026 ; je les rev
 | GitHub | `@octokit/graphql` et `@octokit/rest` | 9.0.5 et 22.0.1 | lecture des repos, commits |
 | Images | sharp | 0.35.5 minimum | réencodage des uploads, JPEG des images de partage |
 | Email | Resend | offre gratuite | formulaire de contact |
-| Tests | Vitest, Playwright, @axe-core/playwright, MSW | 5.0.5, 1.64.1, 4.14.0, 3.0.3 | unitaires, e2e, accessibilité, simulation de GitHub |
+| Tests | Vitest, Playwright, @axe-core/playwright, MSW | 5.1.0, 1.64.1, 4.14.0, 3.0.3 | unitaires, e2e, accessibilité, simulation de GitHub |
 | Audit | Lighthouse | 13.6.0 | scores à chaque PR |
-| Lint et format | ESLint, eslint-config-next, Prettier | 10.14.0, 16.4.3, 3.9.10 | qualité et format du code |
+| Lint et format | ESLint, eslint-config-next, Prettier | 10.14.0, 16.4.5, 3.9.10 | qualité et format du code |
 | Hébergement | Vercel Hobby | — | builds, CDN, aperçus, analytics |
 | Traductions, si FR + EN | next-intl | 4.14.9 | URLs et textes par langue |
 | Design | Claude Design | — | maquettes et design system de référence |
@@ -321,7 +321,7 @@ Le site public n'expose rien d'exploitable (pages statiques, aucun secret dans l
 - **Server Actions** : protection CSRF native de Next.js (contrôle de l'origine), validation Zod de chaque entrée, tailles bornées.
 - **Uploads** : type vérifié sur la signature du fichier, une image par requête, 4 Mo maximum (Vercel coupe à 4,5 Mo), réencodage serveur par sharp qui retire EXIF, GPS et tout contenu piégé, noms de fichiers générés.
 - **Markdown** (README importés, études de cas) : pas de HTML brut, rendu assaini (rehype-sanitize), liens externes en `rel="noopener noreferrer"`.
-- **En-têtes** : HSTS, `X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy`, `frame-ancestors 'none'`, COOP, `poweredByHeader: false`. CSP stricte avec nonce sur `/admin`. Sur les pages statiques, CSP par hachage via `experimental.sri`, testée en phase 1 ; sinon `'unsafe-inline'`, et la note tombe à B+ au mieux (Mozilla Observatory n'accorde aucun bonus sous 90), choix justifié par un ADR. Même test en phase 1 pour le nonce de /admin, que la documentation Next.js juge incompatible avec le pré-rendu partiel.
+- **En-têtes** : HSTS, `X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy`, `frame-ancestors 'none'`, COOP, `poweredByHeader: false`. CSP stricte avec nonce sur `/admin`, rendu à chaque requête (`instant = false`) : testée en phase 1, elle fonctionne. Sur les pages statiques, la CSP par hachage via `experimental.sri` a échoué au test de la phase 1, car les scripts en ligne des React Server Components ne sont pas couverts : les scripts passent donc par `'unsafe-inline'`, note B+ au mieux (Mozilla Observatory n'accorde aucun bonus sous 90), choix justifié par l'ADR 0005.
 - **Formulaire de contact** : pot de miel, délai minimal de saisie, Turnstile ; pas de limite de débit en V1, car sans stockage partagé elle ne tiendrait pas entre les instances Vercel, contenu échappé dans l'email.
 - **Dépendances et repo** : scripts d'installation bloqués sauf liste `allowBuilds`, Dependabot, audit pnpm en CI, CodeQL, secret scanning et push protection, ruleset sur `main` (PR obligatoire, contournement réservé au rôle admin pour les commits du CMS).
 - **RGPD** : analytics sans cookies donc sans bandeau, messages non stockés par le site (Resend garde un journal des envois, déclaré dans la page confidentialité), polices auto-hébergées (aucun appel à Google Fonts), page confidentialité.
@@ -425,11 +425,12 @@ Chaque phase se termine par une démo, cette checklist cochée et un débrief de
 - [x] Toi : valider ce plan, ligne par ligne dans le tableau des décisions
 - [x] Toi : accepter les mises à jour de Node.js et de Git (fenêtre Windows « Autoriser »)
 - [x] Toi : exporter ton profil LinkedIn en PDF et l'ajouter au projet Claude
-- [ ] Toi : créer ton compte Vercel avec « Continue with GitHub », puis lancer vercel login une fois sur ton PC
+- [x] Toi : créer ton compte Vercel avec « Continue with GitHub », puis lancer vercel login une fois sur ton PC
 - [ ] Toi : choisir le nom de domaine dans ma liste, puis l'acheter
-- [ ] Moi : créer le repo public `portfolio`, protéger `main` par un ruleset (PR obligatoire, contournement réservé au rôle admin pour le CMS), activer secret scanning, push protection et Dependabot, créer et lier le projet Vercel
-- [ ] Moi : signer les commits du repo avec ton adresse GitHub noreply, pour que ton email n'apparaisse pas dans l'historique public
-- [ ] Moi : enregistrer le plan validé dans le projet Claude, puis une version sans données personnelles dans `docs/PLAN.md` et `CLAUDE.md`
+- [x] Moi : créer le repo public `portfolio`, protéger `main` par un ruleset (PR obligatoire, contournement réservé au rôle admin pour le CMS), activer secret scanning, push protection et Dependabot (fait le 1er novembre)
+- [x] Moi : signer les commits du repo avec ton adresse GitHub noreply, pour que ton email n'apparaisse pas dans l'historique public
+- [ ] Moi : créer et lier le projet Vercel, après ton vercel login
+- [x] Moi : enregistrer le plan validé dans le projet Claude, puis une version sans données personnelles dans `docs/PLAN.md` et `CLAUDE.md`
 
 Terminé quand : plan validé, repo créé, Vercel relié au repo.
 

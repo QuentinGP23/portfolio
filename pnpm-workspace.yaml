@@ -1,0 +1,19 @@
+# pnpm 12 project settings (see docs/adr/0004-outillage.md).
+
+# Supply-chain protection: a version must be 24 h old before it can be installed,
+# except Next.js and React, so their security fixes can ship the same day.
+minimumReleaseAge: 1440
+minimumReleaseAgeExclude:
+  - next
+  - "@next/*"
+  - eslint-config-next
+  - react
+  - react-dom
+
+# Dependency install scripts are refused unless explicitly reviewed here.
+# None is needed: native binaries ship as optional dependencies, and Git hooks
+# are installed by our own `prepare` script.
+allowBuilds:
+  lefthook: false
+  sharp: false
+  unrs-resolver: false

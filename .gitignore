@@ -1,27 +1,32 @@
 # dependencies
-node_modules/
+/node_modules
+/.pnp
+.pnp.*
 .pnpm-store/
 
 # Next.js
-.next/
-out/
+/.next/
+/out/
+/build
 next-env.d.ts
 *.tsbuildinfo
 
 # tests and reports
-coverage/
-playwright-report/
-test-results/
-blob-report/
+/coverage
+/playwright-report/
+/test-results/
+/blob-report/
+/playwright/.cache/
 
-# environment
+# environment (only the documented example is committed)
 .env*
 !.env.example
 
 # Vercel
 .vercel
 
-# logs and OS files
+# misc
+*.pem
 *.log
 .DS_Store
 Thumbs.db
