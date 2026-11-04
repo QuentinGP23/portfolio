@@ -1,0 +1,23 @@
+# Git hooks: format and lint staged files before each commit, check the commit
+# message (Conventional Commits), check types before each push.
+pre-commit:
+  piped: true
+  jobs:
+    - name: prettier
+      glob: "*.{js,jsx,mjs,cjs,ts,tsx,mts,json,css,md,yml,yaml}"
+      run: pnpm exec prettier --write --ignore-unknown {staged_files}
+      stage_fixed: true
+    - name: eslint
+      glob: "*.{js,jsx,mjs,cjs,ts,tsx,mts}"
+      run: pnpm exec eslint --fix --max-warnings=0 {staged_files}
+      stage_fixed: true
+
+commit-msg:
+  jobs:
+    - name: commitlint
+      run: pnpm exec commitlint --edit {1}
+
+pre-push:
+  jobs:
+    - name: typecheck
+      run: pnpm typecheck

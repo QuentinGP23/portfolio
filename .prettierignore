@@ -1,0 +1,10 @@
+pnpm-lock.yaml
+.next/
+out/
+coverage/
+playwright-report/
+test-results/
+next-env.d.ts
+# Generated or managed elsewhere
+AGENTS.md
+docs/PLAN.md
